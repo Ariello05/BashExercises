@@ -9,13 +9,14 @@ function showBattery() {
 	i=0
 	let "a= $1 / 2"
 	while [ "$a" -gt "$i" ]; do
-		printf "░"
+		printf "█"
 		((i++))
 	done
 	echo
 	printf "─%.0s" {1..50}
 	printf "\n"
 }
+
 
 function showUpTime() {
 	printf " %.0s" {1..9}
@@ -35,10 +36,11 @@ function showUpTime() {
 
 function setBatteryColor() {
 
-	if [ "$1" -lt 20 ]; then
-		tput setaf 11 #yellow
-	elif [ "$1" -lt 5 ]; then
-		tput setaf 1 #red
+	if [ "$1" -lt 30 ]; then
+		tput setaf 226 #yellow
+		if [ "$1" -lt 7 ]; then
+			tput setaf 1 #red
+		fi
 	else
 		tput setaf 4 #blue
 	fi
@@ -50,12 +52,18 @@ function showProcAvg() {
 	printf "%35s AVERGAVE JOBS PER 1 MINUTE\n" " "
 
 	for index in {20..1}; do
-		printf "%3s┊" ""
-	       	#$(($index*10))
+		printf "%3s┊" $(($index*10))
+		tput setaf 149
 		local index2=0
-		tput setaf 202
 		while [ "$index2" -lt "$j" ];do
 			x=${procloadValue[$index2]}
+
+			#if [ "$x" -gt 10 ]; then
+			#	tput setaf 196
+			#else
+			#	tput setaf 27
+			#fi
+
 			if [ "$index" -lt "$x" ] || [ "$index" -eq "$x" ]; then	
 				printf "│▓│"
 			else
@@ -67,23 +75,23 @@ function showProcAvg() {
 		printf "\n"
 	done
 
-	printf "    "
+	printf "  0 "
 	printf "┈%.0s" {1..90}
 	printf "\n"
 	printf "   "
 
 	local index=0
-	while [ "$index" -lt 29 ]; do
-		printf "  %3s " ${procload[$index]}
-		let index=$index+2	
+	while [ "$index" -lt $j ]; do
+		printf "%3s" $index
+		let index=$index+1	
 	done
 
 	echo
 	#echo AVG: $1 $2 $3
 	local num=$(bc -l <<<"$1*10")
 	procloadValue[$j]=$(printf "%.0f" $num)
-	local num=$(bc -l <<<"$num*10")
-	procload[$j]=$(printf "%.0f" $num)
+	#local num=$(bc -l <<<"$num*10")
+	#procload[$j]=$(printf "%.0f" $num)
 
 	if [ ! "$flag" -eq 1 ]; then
 		((j++))
@@ -96,7 +104,7 @@ function showProcAvg() {
 		local i2=1
 		while [ "$i1" -lt 30 ]
 		do
-			procload[$i1]=${procload[$i2]}
+	#		procload[$i1]=${procload[$i2]}
 			procloadValue[$i1]=${procloadValue[$i2]}
 			((i1++))
 			((i2++))
@@ -105,6 +113,45 @@ function showProcAvg() {
 
 }
 
+function showInternet(){
+	#echo $1
+	#local kb1=$(expr $1/1024)
+	let kb1=$1/1024
+	let mb1=kb/1024
+	let avr1=$1/$3
+	
+	let kb2=$2/1024
+	let mb2=kb2/1024
+	let avr2=$2/$3
+
+	printf " %.0s" {1..9}
+       	printf "%40s RECEIVED\n"
+	printf "%35s %7s  %8s  %6s   %5s\n" "" B   KB  MB  AVG
+	printf "%35s"
+	printf "━%.0s" {1..35}
+	printf "\n%35s"
+	printf "│%11s" "$1"
+	printf "│%8s" $kb1
+	printf "│%6s" "$mb1"
+	printf "│%5s│" "$avr1"
+	printf "\n%35s"
+	printf "━%.0s" {1..35}
+	printf "\n"
+
+	printf " %.0s" {1..9}
+       	printf "%40s SENT\n"
+	printf "%35s %7s  %8s  %6s   %5s\n" "" B   KB  MB  AVG
+	printf "%35s"
+	printf "━%.0s" {1..35}
+	printf "\n%35s"
+	printf "│%11s" "$2"
+	printf "│%8s" "$kb2"
+	printf "│%6s" "$mb2"
+	printf "│%5s│" "$avr2"
+	printf "\n%35s"
+	printf "━%.0s" {1..35}
+	printf "\n"
+}
 
 while true
 do
@@ -122,6 +169,14 @@ do
 	setBatteryColor $battery
 	showBattery $battery 
 	tput sgr0;#reset
+
+	printf "\n"
+	isp=$(cat /proc/net/dev)
+	isp=$(echo $isp | cut -f 2 -d ":")
+	osp=$isp
+	isp=$(echo $isp | cut -f 1 -d " ")
+	osp=$(echo $osp | cut -f 9 -d " ")
+	showInternet $isp $osp  $uptime
 
 	sleep 1
 	clear

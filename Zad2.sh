@@ -1,10 +1,15 @@
 #!bin/sh
 
+function getOpen(){	
+	find $1 | wc -l #no directories
+	#echo $1
+}
 
-echo "  PID   PPID   UID   GID    STATE |NAME"
+echo "  PID   PPID   UID   GID  STATE  OPEN   | NAME"
 #text="PID PPID\n"
 for file in $(find /proc/* -maxdepth 0 -type d -iname "[0-9]*")
 do
+	fd="$file/fd"
 	file="$file/status"
 	#read $file
 	#text=$(cat < $file)
@@ -31,7 +36,7 @@ do
 		ppid=$(  head -n 7 $file  | tail -1 | cut -c 7-  )
  		uid=$(   head -n 9 $file  | tail -1 | cut -c 5-7 )		
 		gid=$(   head -n 10 $file | tail -1 | cut -c 5-7 ) 
-
-		printf "%5s %5s %5s %5s %6s    | %s\n" $pid $ppid $uid $gid $state $name
+		open=$(getOpen $fd)
+		printf "%5s %5s %5s %5s %5s %6s    | %s\n" $pid $ppid $uid $gid $state $open $name
 	fi
 done
