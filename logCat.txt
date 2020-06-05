@@ -1,0 +1,16 @@
+--2020-06-05 17:39:00--  https://cdn2.thecatapi.com/images/MTcwMTgxMg.jpg
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving cdn2.thecatapi.com (cdn2.thecatapi.com)... 172.67.165.7, 104.18.46.227, 104.18.47.227, ...
+Connecting to cdn2.thecatapi.com (cdn2.thecatapi.com)|172.67.165.7|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 75264 (74K) [image/jpeg]
+Saving to: ‘cdn2.thecatapi.com/images/MTcwMTgxMg.jpg’
+
+     0K .......... .......... .......... .......... .......... 68% 6.98M 0s
+    50K .......... .......... ...                             100% 2.65M=0.02s
+
+2020-06-05 17:39:01 (4.58 MB/s) - ‘cdn2.thecatapi.com/images/MTcwMTgxMg.jpg’ saved [75264/75264]
+
+FINISHED --2020-06-05 17:39:01--
+Total wall clock time: 1.5s
+Downloaded: 1 files, 74K in 0.02s (4.58 MB/s)

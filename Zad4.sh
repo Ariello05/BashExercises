@@ -1,4 +1,4 @@
-#!bin/sh
+#!/bin/sh
 if [ $# -lt 2 ]; then
 	printf "THERE NEED TO BE 2 ARGS \n"
 	printf "1: Site url \t 2: Refresh rate in seconds  \t 3: [OPTIONAL] History Count \n"

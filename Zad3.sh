@@ -1,8 +1,4 @@
-#!bin/sh
-
-#if [ ! -d "HTML" ]; then
-#	mkdir "HTML"
-#fi
+#!/bin/sh
 
 
 cats=$(curl -s 'https://api.thecatapi.com/v1/images/search/' | jq -r '.[].url')
