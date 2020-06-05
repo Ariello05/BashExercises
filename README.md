@@ -7,4 +7,8 @@ Exercises for 'architecture of computers and operational systems' course.
 
 ## Demo
 Task number I
-![Main](https://github.com/Ariello05/BashExercises/blob/master/Bash1.png)
+![Main1](https://github.com/Ariello05/BashExercises/blob/master/Bash1.png)
+Task number II 
+![Main2](https://github.com/Ariello05/BashExercises/blob/master/Bash2.png)
+Task number III (cat images -> ascii art)
+![Main3](https://github.com/Ariello05/BashExercises/blob/master/Bash3.png)
